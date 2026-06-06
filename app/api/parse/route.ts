@@ -31,7 +31,10 @@ Rules:
 - If the input contains no actionable tasks, return an empty array: []`;
 
 async function callAI(text: string): Promise<unknown[]> {
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const anthropic = new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY,
+    dangerouslyAllowBrowser: true,
+  });
   const today = new Date().toISOString().slice(0, 10);
   const msg = await anthropic.messages.create({
     model: "claude-haiku-4-5-20251001",
@@ -65,10 +68,12 @@ export async function POST(req: NextRequest) {
 
   try {
     parsed = await callAI(text);
-  } catch {
+  } catch (err) {
+    console.error("[parse] first attempt failed:", err);
     try {
       parsed = await callAI(text);
-    } catch {
+    } catch (err2) {
+      console.error("[parse] retry failed:", err2);
       return NextResponse.json(
         { error: "AI parsing failed. Please try again." },
         { status: 500 }
