@@ -33,10 +33,7 @@ function TaskCard({ task }: { task: Task }) {
     new Date(task.deadline + "T00:00:00") < new Date(new Date().toDateString());
 
   return (
-    <div
-      className="bg-white rounded-2xl overflow-hidden"
-      style={{ border: "1px solid #D8D9DB" }}
-    >
+    <div className="bg-white rounded-2xl overflow-hidden">
       {/* Content */}
       <div className="px-4 pt-4 pb-3">
         {/* Priority pill */}
@@ -44,8 +41,8 @@ function TaskCard({ task }: { task: Task }) {
           className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold mb-2.5"
           style={
             task.priority === "must"
-              ? { backgroundColor: "#4F535E", color: "#ffffff" }
-              : { backgroundColor: "#D8D9DB", color: "#4F535E" }
+              ? { backgroundColor: "#7EA78E", color: "#3D6151" }
+              : { backgroundColor: "#B6B69C", color: "#5C5C47" }
           }
         >
           {task.priority === "must" ? "Must" : "Nice"}

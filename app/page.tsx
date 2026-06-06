@@ -10,7 +10,7 @@ export default function Home() {
   const [screen, setScreen] = useState<Screen>("capture");
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen" style={{ backgroundColor: "#F2F2F7" }}>
       <main className="flex-1 overflow-y-auto pb-20">
         <div className="max-w-md mx-auto">
           {screen === "capture" && <CaptureScreen onParsed={() => setScreen("inbox")} />}
