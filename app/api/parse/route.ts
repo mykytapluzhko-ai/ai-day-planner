@@ -3,8 +3,6 @@ import Anthropic from "@anthropic-ai/sdk";
 import { v4 as uuidv4 } from "uuid";
 import { Task } from "@/lib/types";
 
-const anthropic = new Anthropic();
-
 const ESTIMATE_BUCKETS = [5, 15, 30, 60, 120, 240];
 
 function nearestBucket(n: number): number {
@@ -33,6 +31,7 @@ Rules:
 - If the input contains no actionable tasks, return an empty array: []`;
 
 async function callAI(text: string): Promise<unknown[]> {
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const today = new Date().toISOString().slice(0, 10);
   const msg = await anthropic.messages.create({
     model: "claude-haiku-4-5-20251001",
@@ -46,6 +45,10 @@ async function callAI(text: string): Promise<unknown[]> {
 }
 
 export async function POST(req: NextRequest) {
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json({ error: "ANTHROPIC_API_KEY is not configured" }, { status: 500 });
+  }
+
   let raw: string;
   try {
     ({ raw } = await req.json());
