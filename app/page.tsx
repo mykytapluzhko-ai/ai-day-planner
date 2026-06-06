@@ -5,6 +5,7 @@ import BottomNav, { Screen } from "@/components/BottomNav";
 import CaptureScreen from "@/components/CaptureScreen";
 import InboxScreen from "@/components/InboxScreen";
 import TodayScreen from "@/components/TodayScreen";
+import WeekScreen from "@/components/WeekScreen";
 
 export default function Home() {
   const [screen, setScreen] = useState<Screen>("capture");
@@ -19,6 +20,7 @@ export default function Home() {
           {screen === "capture" && <CaptureScreen onParsed={() => setScreen("inbox")} />}
           {screen === "inbox" && <InboxScreen />}
           {screen === "today" && <TodayScreen />}
+          {screen === "week" && <WeekScreen />}
         </div>
       </main>
       <BottomNav screen={screen} onChange={setScreen} />

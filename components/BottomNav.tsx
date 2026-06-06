@@ -1,6 +1,6 @@
 "use client";
 
-export type Screen = "capture" | "inbox" | "today";
+export type Screen = "capture" | "today" | "week" | "inbox";
 
 interface Props {
   screen: Screen;
@@ -23,6 +23,15 @@ const tabs: { id: Screen; label: string; icon: React.ReactNode }[] = [
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+  },
+  {
+    id: "week",
+    label: "Week",
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </svg>
     ),
   },
