@@ -15,10 +15,12 @@ export default function CaptureScreen({ onParsed }: Props) {
   const [listening, setListening] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
+  const keepListeningRef = useRef(false);
   const addTasks = useStore((s) => s.addTasks);
 
   const toggleVoice = () => {
     if (listening) {
+      keepListeningRef.current = false;
       recognitionRef.current?.stop();
       setListening(false);
       return;
@@ -32,6 +34,7 @@ export default function CaptureScreen({ onParsed }: Props) {
     const rec = new SR();
     rec.continuous = true;
     rec.interimResults = false;
+    rec.lang = "uk-UA";
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rec.onresult = (e: any) => {
       const transcript = Array.from(e.results as ArrayLike<SpeechRecognitionResult>)
@@ -40,9 +43,17 @@ export default function CaptureScreen({ onParsed }: Props) {
         .join(" ");
       setText((prev) => prev + (prev ? " " : "") + transcript);
     };
-    rec.onend = () => setListening(false);
+    rec.onend = () => {
+      // Auto-restart on silence timeout so recording doesn't cut off
+      if (keepListeningRef.current) {
+        try { rec.start(); } catch { /* already starting */ }
+      } else {
+        setListening(false);
+      }
+    };
     rec.start();
     recognitionRef.current = rec;
+    keepListeningRef.current = true;
     setListening(true);
   };
 
@@ -70,31 +81,30 @@ export default function CaptureScreen({ onParsed }: Props) {
 
   return (
     <div
-      className="flex flex-col justify-between"
+      className="flex flex-col"
       style={{ minHeight: "calc(100dvh - 5rem)" }}
     >
-      {/* Title pinned to top */}
-      <div className="px-5 pt-14">
+      {/* Title on gray background */}
+      <div className="px-5 pt-14 pb-5">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Brain Dump</h1>
       </div>
 
-      {/* Textarea + buttons in the lower portion */}
-      <div className="px-5 pb-6 flex flex-col gap-3">
+      {/* White card — fills remaining height, rounded top corners only */}
+      <div className="flex flex-col flex-1 bg-white rounded-t-3xl px-5 pt-6 pb-6">
+        {/* Textarea fills top portion */}
         <textarea
-          className="w-full px-5 py-4 rounded-3xl bg-white text-gray-900 text-base resize-none focus:outline-none placeholder-gray-300 leading-relaxed"
-          style={{ height: "42dvh" }}
-          placeholder={
-            "Type or speak everything on your mind\n\ne.g. Send invoice to Acme by Friday.\nFix the auth bug, it's blocking the team.\nCall mom this weekend.\nClean my desk at some point…"
-          }
+          className="flex-1 w-full text-gray-900 text-base resize-none focus:outline-none bg-transparent leading-relaxed"
+          style={{ color: "rgba(0,0,0,0.9)" }}
+          placeholder="Type or speak everything on your mind"
           value={text}
           onChange={(e) => setText(e.target.value)}
           disabled={loading}
         />
 
-        {error && <p className="text-sm text-red-400 -mt-1">{error}</p>}
+        {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
 
-        {/* Parse button + mic side by side */}
-        <div className="flex items-center gap-3">
+        {/* Buttons at the bottom of the card */}
+        <div className="mt-4 flex items-center gap-3">
           <button
             onClick={parse}
             disabled={!text.trim() || loading}

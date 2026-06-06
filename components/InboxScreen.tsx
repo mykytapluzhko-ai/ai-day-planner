@@ -80,11 +80,9 @@ function TaskCard({ task }: { task: Task }) {
         </div>
       </div>
 
-      {/* Actions */}
-      <div
-        className="flex divide-x"
-        style={{ borderTop: "1px solid #D8D9DB", borderColor: "#D8D9DB" }}
-      >
+      {/* Inset divider — 20px gap each side, no button separators */}
+      <div style={{ height: "1px", backgroundColor: "#D8D9DB", margin: "0 20px" }} />
+      <div className="flex">
         <button
           onClick={() => addToToday(task.id)}
           className="flex-1 py-3 text-xs font-semibold transition-colors hover:bg-gray-50 active:bg-gray-100"
@@ -98,7 +96,6 @@ function TaskCard({ task }: { task: Task }) {
           style={{
             color: laterFlash ? "#16a34a" : "rgba(0,0,0,0.4)",
             backgroundColor: laterFlash ? "#f0fdf4" : undefined,
-            borderColor: "#D8D9DB",
           }}
         >
           {laterFlash ? "Saved ✓" : "Later"}
@@ -106,7 +103,7 @@ function TaskCard({ task }: { task: Task }) {
         <button
           onClick={() => deleteTask(task.id)}
           className="flex-1 py-3 text-xs font-semibold transition-colors hover:text-red-500 hover:bg-red-50 active:bg-red-100"
-          style={{ color: "rgba(0,0,0,0.4)", borderColor: "#D8D9DB" }}
+          style={{ color: "rgba(0,0,0,0.4)" }}
         >
           Delete
         </button>
