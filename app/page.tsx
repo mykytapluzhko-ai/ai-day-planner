@@ -11,7 +11,10 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundColor: "#F2F2F7" }}>
-      <main className="flex-1 overflow-y-auto pb-20">
+      <main
+          className="flex-1 overflow-y-auto"
+          style={{ paddingBottom: "calc(5rem + env(safe-area-inset-bottom, 0px))" }}
+        >
         <div className="max-w-md mx-auto">
           {screen === "capture" && <CaptureScreen onParsed={() => setScreen("inbox")} />}
           {screen === "inbox" && <InboxScreen />}

@@ -82,15 +82,18 @@ export default function CaptureScreen({ onParsed }: Props) {
   return (
     <div
       className="flex flex-col"
-      style={{ minHeight: "calc(100dvh - 5rem)" }}
+      style={{ minHeight: "calc(100dvh - 5rem - env(safe-area-inset-bottom, 0px))" }}
     >
       {/* Title on gray background */}
-      <div className="px-5 pt-14 pb-5">
-        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Brain Dump</h1>
+      <div className="px-5 pt-14 pb-3">
+        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Dayflow</h1>
       </div>
 
-      {/* White card — fills remaining height, rounded top corners only */}
-      <div className="flex flex-col flex-1 bg-white rounded-t-3xl px-5 pt-6 pb-6">
+      {/* White card — 20px side margins, top corners rounded (nested radius), bottom straight, flush with nav */}
+      <div
+        className="flex flex-col flex-1 bg-white overflow-hidden mx-5 px-5 pt-6 pb-6"
+        style={{ borderRadius: "24px 24px 0 0" }}
+      >
         {/* Textarea fills top portion */}
         <textarea
           className="flex-1 w-full text-gray-900 text-base resize-none focus:outline-none bg-transparent leading-relaxed"

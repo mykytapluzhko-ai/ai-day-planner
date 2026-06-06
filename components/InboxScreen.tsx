@@ -145,7 +145,7 @@ export default function InboxScreen() {
             </svg>
           </div>
           <p className="text-sm font-semibold" style={{ color: "#D8D9DB" }}>Your inbox is empty</p>
-          <p className="text-xs mt-1" style={{ color: "#D8D9DB" }}>Go to Capture and do a brain dump</p>
+          <p className="text-xs mt-1" style={{ color: "#D8D9DB" }}>Go to Capture and add your tasks</p>
         </div>
       ) : (
         <div className="space-y-3">

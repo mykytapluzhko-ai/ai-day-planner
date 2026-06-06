@@ -19,67 +19,69 @@ function CheckItem({
   const done = task.status === "done";
 
   return (
-    <button
-      onClick={done ? onUncomplete : onComplete}
-      className="w-full flex items-center gap-4 bg-white rounded-2xl shadow-sm px-4 py-4 text-left active:scale-[0.98] overflow-hidden relative transition-all"
-    >
-      {/* Priority stripe */}
-      <div
-        className={`absolute left-0 inset-y-0 w-1 transition-colors ${
-          done
-            ? "bg-gray-100"
-            : task.priority === "must"
-            ? "bg-red-400"
-            : "bg-gray-200"
-        }`}
-      />
+    <div className="bg-white rounded-2xl overflow-hidden">
+      <div className="px-4 pt-4 pb-4">
+        {/* Top row: priority pill (left) + time badge (right) */}
+        <div className="flex items-center justify-between mb-2.5">
+          <span
+            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
+            style={
+              task.priority === "must"
+                ? { backgroundColor: done ? "#E0E0E0" : "#7EA78E", color: done ? "#999" : "#3D6151" }
+                : { backgroundColor: done ? "#E0E0E0" : "#B6B69C", color: done ? "#999" : "#5C5C47" }
+            }
+          >
+            {task.priority === "must" ? "Must" : "Nice"}
+          </span>
+          <span
+            className="text-xs font-medium bg-gray-50 px-2.5 py-1 rounded-full"
+            style={{ color: done ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.6)" }}
+          >
+            {fmtEstimate(task.estimateMinutes)}
+          </span>
+        </div>
 
-      {/* Checkbox */}
-      <div
-        className={`shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
-          done
-            ? "border-indigo-500 bg-indigo-500"
-            : task.priority === "must"
-            ? "border-red-300"
-            : "border-gray-200"
-        }`}
-      >
-        {done && (
-          <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 14 14" fill="none">
-            <path
-              d="M2.5 7L5.5 10L11.5 4"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )}
-      </div>
-
-      {/* Text */}
-      <div className="flex-1 min-w-0 pl-1">
+        {/* Title */}
         <p
-          className={`font-semibold text-[15px] leading-snug transition-all ${
-            done ? "line-through text-gray-300" : "text-gray-900"
-          }`}
+          className={`font-semibold text-[15px] leading-snug${done ? " line-through" : ""}`}
+          style={{ color: done ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.9)" }}
         >
           {task.title}
         </p>
-        {task.notes && !done && (
-          <p className="text-xs text-gray-400 mt-0.5 truncate">{task.notes}</p>
-        )}
-      </div>
 
-      {/* Estimate */}
-      <span
-        className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full transition-colors ${
-          done ? "text-gray-200 bg-gray-50" : "text-gray-400 bg-gray-50"
-        }`}
-      >
-        {fmtEstimate(task.estimateMinutes)}
-      </span>
-    </button>
+        {/* Notes */}
+        {task.notes && !done && (
+          <p className="text-sm mt-1 leading-snug" style={{ color: "rgba(0,0,0,0.6)" }}>
+            {task.notes}
+          </p>
+        )}
+
+        {/* Bottom row: checkbox aligned to right */}
+        <div className="flex justify-end mt-3">
+          <button
+            onClick={done ? onUncomplete : onComplete}
+            className="w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all active:scale-90"
+            style={{
+              borderColor: done ? "#4F535E" : "#D8D9DB",
+              backgroundColor: done ? "#4F535E" : "transparent",
+            }}
+            aria-label={done ? "Mark as not done" : "Mark as done"}
+          >
+            {done && (
+              <svg className="w-3.5 h-3.5" viewBox="0 0 14 14" fill="none">
+                <path
+                  d="M2.5 7L5.5 10L11.5 4"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

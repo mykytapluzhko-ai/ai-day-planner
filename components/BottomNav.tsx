@@ -39,7 +39,10 @@ const tabs: { id: Screen; label: string; icon: React.ReactNode }[] = [
 
 export default function BottomNav({ screen, onChange }: Props) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white z-10">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-10"
+      style={{ backgroundColor: "#F2F2F7" }}
+    >
       <div className="max-w-md mx-auto flex">
         {tabs.map((tab) => {
           const active = screen === tab.id;
@@ -47,7 +50,8 @@ export default function BottomNav({ screen, onChange }: Props) {
             <button
               key={tab.id}
               onClick={() => onChange(tab.id)}
-              className="flex-1 flex flex-col items-center pt-2 pb-5 gap-1 transition-colors"
+              className="flex-1 flex flex-col items-center pt-2 gap-1 transition-colors"
+              style={{ paddingBottom: "calc(1.25rem + env(safe-area-inset-bottom, 0px))" }}
             >
               <span style={{ color: active ? "#4F535E" : "#D8D9DB" }}>
                 {tab.icon}
