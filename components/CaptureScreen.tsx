@@ -92,7 +92,7 @@ export default function CaptureScreen({ onParsed }: Props) {
       {/* White card — 20px side margins, top corners rounded (nested radius), bottom straight, flush with nav */}
       <div
         className="flex flex-col flex-1 bg-white overflow-hidden mx-5 px-5 pt-6 pb-6"
-        style={{ borderRadius: "24px 24px 0 0" }}
+        style={{ borderRadius: "24px" }}
       >
         {/* Textarea fills top portion */}
         <textarea

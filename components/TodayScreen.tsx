@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useStore } from "@/lib/store";
 import { Task } from "@/lib/types";
 
@@ -85,8 +86,11 @@ function CheckItem({
   );
 }
 
+type Filter = "all" | "must" | "nice";
+
 export default function TodayScreen() {
   const { tasks, completeTask, uncompleteTask } = useStore();
+  const [filter, setFilter] = useState<Filter>("all");
   const today = new Date().toISOString().slice(0, 10);
 
   const todayTasks = tasks
@@ -102,6 +106,9 @@ export default function TodayScreen() {
       return a.estimateMinutes - b.estimateMinutes;
     });
 
+  const visibleTasks =
+    filter === "all" ? todayTasks : todayTasks.filter((t) => t.priority === filter);
+
   const pending = todayTasks.filter((t) => t.status === "today");
   const done = todayTasks.filter((t) => t.status === "done");
   const totalMin = pending.reduce((s, t) => s + t.estimateMinutes, 0);
@@ -115,12 +122,38 @@ export default function TodayScreen() {
           totalMin < 60 ? `${totalMin}m` : `${Math.round((totalMin / 60) * 10) / 10}h`
         }`;
 
+  const filters: { id: Filter; label: string }[] = [
+    { id: "all", label: "All" },
+    { id: "must", label: "Must" },
+    { id: "nice", label: "Nice" },
+  ];
+
   return (
     <div className="px-5 pt-14 pb-6">
       {/* Header */}
-      <div className="mb-6">
+      <div className="mb-4">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Today</h1>
         <p className="text-sm text-gray-400 mt-1">{subtitle}</p>
+      </div>
+
+      {/* Filter buttons */}
+      <div className="flex gap-2 mb-5">
+        {filters.map((f) => {
+          const active = filter === f.id;
+          return (
+            <button
+              key={f.id}
+              onClick={() => setFilter(f.id)}
+              className="px-4 py-1.5 rounded-full text-xs font-semibold transition-colors"
+              style={{
+                backgroundColor: active ? "#4F535E" : "#E8E8EC",
+                color: active ? "#ffffff" : "#4F535E",
+              }}
+            >
+              {f.label}
+            </button>
+          );
+        })}
       </div>
 
       {todayTasks.length === 0 ? (
@@ -135,7 +168,7 @@ export default function TodayScreen() {
         </div>
       ) : (
         <div className="space-y-2.5">
-          {todayTasks.map((task) => (
+          {visibleTasks.map((task) => (
             <CheckItem
               key={task.id}
               task={task}
