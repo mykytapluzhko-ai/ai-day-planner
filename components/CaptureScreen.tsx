@@ -71,17 +71,17 @@ export default function CaptureScreen({ onParsed }: Props) {
   return (
     <div
       className="flex flex-col px-5 pt-14"
-      style={{ minHeight: "calc(100dvh - 5rem)", paddingBottom: "1.5rem" }}
+      style={{ minHeight: "calc(100dvh - 5rem)", paddingBottom: "1.25rem" }}
     >
       {/* Header */}
-      <div className="mb-5">
+      <div className="mb-4">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Brain Dump</h1>
         <p className="text-sm text-gray-400 mt-1">Type or speak everything on your mind</p>
       </div>
 
       {/* Textarea — fills remaining space */}
       <textarea
-        className="flex-1 w-full px-5 py-4 rounded-3xl border border-gray-100 bg-gray-50 text-gray-900 text-base resize-none focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-200 placeholder-gray-300 leading-relaxed"
+        className="flex-1 w-full px-5 py-4 rounded-3xl border border-[#D8D9DB] bg-gray-50 text-gray-900 text-base resize-none focus:outline-none focus:ring-2 focus:ring-[#4F535E]/20 focus:border-[#4F535E]/40 placeholder-gray-300 leading-relaxed"
         placeholder={
           "e.g. Send invoice to Acme by Friday.\nFix the auth bug, it's blocking the team.\nCall mom this weekend.\nClean my desk at some point…"
         }
@@ -90,36 +90,16 @@ export default function CaptureScreen({ onParsed }: Props) {
         disabled={loading}
       />
 
-      {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
+      {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
 
-      {/* Bottom actions */}
-      <div className="mt-5 flex flex-col items-center gap-4">
-        {/* Mic button — centered */}
-        <button
-          onClick={toggleVoice}
-          className={`w-16 h-16 rounded-full flex items-center justify-center transition-all shadow-sm ${
-            listening
-              ? "bg-red-500 text-white scale-90 shadow-red-100"
-              : "bg-white text-gray-500 border border-gray-200 hover:bg-gray-50 active:scale-95"
-          }`}
-          aria-label={listening ? "Stop recording" : "Start voice input"}
-        >
-          {listening ? (
-            <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-              <rect x="6" y="6" width="12" height="12" rx="2" />
-            </svg>
-          ) : (
-            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z" />
-            </svg>
-          )}
-        </button>
-
-        {/* Send button — full width */}
+      {/* Bottom row: parse button + mic side by side */}
+      <div className="mt-3 flex items-center gap-3">
+        {/* Parse button — fills remaining width */}
         <button
           onClick={parse}
           disabled={!text.trim() || loading}
-          className="w-full h-14 rounded-2xl bg-indigo-600 text-white font-semibold text-base disabled:opacity-30 flex items-center justify-center gap-2 transition-all hover:bg-indigo-700 active:scale-[0.98]"
+          className="flex-1 h-14 rounded-2xl font-semibold text-base text-white disabled:opacity-30 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+          style={{ backgroundColor: "#4F535E" }}
         >
           {loading ? (
             <>
@@ -130,12 +110,28 @@ export default function CaptureScreen({ onParsed }: Props) {
               Parsing…
             </>
           ) : (
-            <>
-              Parse with AI
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </>
+            "Parse with AI"
+          )}
+        </button>
+
+        {/* Mic button — circular, right side */}
+        <button
+          onClick={toggleVoice}
+          className="mic-btn w-14 h-14 shrink-0 rounded-full flex items-center justify-center transition-all active:scale-95"
+          style={{
+            backgroundColor: listening ? "#4F535E" : "#D8D9DB",
+            color: listening ? "#ffffff" : "#4F535E",
+          }}
+          aria-label={listening ? "Stop recording" : "Start voice input"}
+        >
+          {listening ? (
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <rect x="6" y="6" width="12" height="12" rx="2" />
+            </svg>
+          ) : (
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 016 0v6a3 3 0 01-3 3z" />
+            </svg>
           )}
         </button>
       </div>

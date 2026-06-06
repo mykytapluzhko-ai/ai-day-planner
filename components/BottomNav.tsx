@@ -18,15 +18,6 @@ const tabs: { id: Screen; label: string; icon: React.ReactNode }[] = [
     ),
   },
   {
-    id: "inbox",
-    label: "Inbox",
-    icon: (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-      </svg>
-    ),
-  },
-  {
     id: "today",
     label: "Today",
     icon: (
@@ -35,11 +26,20 @@ const tabs: { id: Screen; label: string; icon: React.ReactNode }[] = [
       </svg>
     ),
   },
+  {
+    id: "inbox",
+    label: "Inbox",
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+      </svg>
+    ),
+  },
 ];
 
 export default function BottomNav({ screen, onChange }: Props) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-10">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white z-10">
       <div className="max-w-md mx-auto flex">
         {tabs.map((tab) => {
           const active = screen === tab.id;
@@ -47,18 +47,14 @@ export default function BottomNav({ screen, onChange }: Props) {
             <button
               key={tab.id}
               onClick={() => onChange(tab.id)}
-              className="flex-1 flex flex-col items-center pt-2 pb-5 gap-1 relative transition-colors"
+              className="flex-1 flex flex-col items-center pt-2 pb-5 gap-1 transition-colors"
             >
-              {active && (
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-indigo-600 rounded-full" />
-              )}
-              <span className={active ? "text-indigo-600" : "text-gray-300"}>
+              <span style={{ color: active ? "#4F535E" : "#D8D9DB" }}>
                 {tab.icon}
               </span>
               <span
-                className={`text-[10px] font-semibold tracking-wide ${
-                  active ? "text-indigo-600" : "text-gray-300"
-                }`}
+                className="text-[10px] font-semibold tracking-wide"
+                style={{ color: active ? "#4F535E" : "#D8D9DB" }}
               >
                 {tab.label}
               </span>
