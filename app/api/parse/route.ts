@@ -44,7 +44,8 @@ async function callAI(text: string): Promise<unknown[]> {
     messages: [{ role: "user", content: text }],
   });
   const raw = msg.content[0].type === "text" ? msg.content[0].text.trim() : "[]";
-  return JSON.parse(raw);
+  const cleaned = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/i, "").trim();
+  return JSON.parse(cleaned);
 }
 
 export async function POST(req: NextRequest) {
